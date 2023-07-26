@@ -1,3 +1,4 @@
+# https://codefresh.io/docs/docs/example-catalog/ci-examples/gradle/
 FROM gradle:jdk17 AS build
 COPY --chown=gradle:gradle . /home/gradle/src
 WORKDIR /home/gradle/src
