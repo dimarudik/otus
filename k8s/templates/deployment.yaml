@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo
+spec:
+  selector:
+    matchLabels:
+      app: demo
+  template:
+    metadata:
+      labels:
+        app: demo
+    spec:
+      containers:
+        - name: demo
+          image: dimarudik/2-docker
+          ports:
+            - name: tpc
+              protocol: TCP
+              containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          env:
+            - name  : DATABASE_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name  : demo-configmap
+                  key   : database_host
+            - name  : DATABASE_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name  : demo-configmap
+                  key   : database_name
+            - name  : SPRING_JPA_SHOW-SQL
+              valueFrom:
+                configMapKeyRef:
+                  name  : demo-configmap
+                  key   : spring_jpa_show-sql
+            - name  : SPRING_JPA_HIBERNATE_DDL-AUTO
+              valueFrom:
+                configMapKeyRef:
+                  name  : demo-configmap
+                  key   : spring_jpa_hibernate_ddl-auto
+            - name  : SPRING_DATASOURCE_URL
+              value : "jdbc:postgresql://$(DATABASE_HOST)/$(DATABASE_NAME)"
+            - name  : SPRING_DATASOURCE_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name  : demo-secret
+                  key   : username
+            - name  : SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name  : demo-secret
+                  key   : password
