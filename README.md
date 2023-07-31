@@ -15,7 +15,7 @@ helm install app ./k8s/
 ```
 
 ```
-kubectl port-forward service/nginx-ingress-nginx-controller 8000:80 -n m
+kubectl port-forward service/nginx-ingress-nginx-controller 8080:80 -n m
 ```
 
 ```
