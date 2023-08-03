@@ -11,7 +11,7 @@ helm install nginx ingress-nginx/ingress-nginx --namespace m
 ```
 git clone -b 7-CRUD https://github.com/dimarudik/otus.git
 cd otus
-helm install app ./k8s/
+helm upgrade --install app ./k8s/ --wait --atomic
 ```
 
 ```
