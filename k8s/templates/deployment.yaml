@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
         - name: demo
-          image: dimarudik/2-docker
+          image: dimarudik/otus:6-Ingress
           ports:
             - name: tpc
               protocol: TCP
