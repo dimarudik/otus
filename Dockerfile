@@ -1,8 +1,9 @@
 # https://codefresh.io/docs/docs/example-catalog/ci-examples/gradle/
+# docker build -t dimarudik/otus:2-docker . --no-cache
 FROM gradle:jdk17 AS build
 COPY --chown=gradle:gradle . /home/gradle/src
 WORKDIR /home/gradle/src
-RUN gradle build --no-daemon
+RUN gradle clean build --no-daemon
 
 FROM openjdk:17.0.2-slim
 EXPOSE 8000
