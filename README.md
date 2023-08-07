@@ -1,12 +1,17 @@
 ```
-kubectl create namespace m && \
 helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx/ && \
-helm repo update && \
-helm install nginx ingress-nginx/ingress-nginx --namespace m 
+helm repo update
 ```
 
 ```
-sudo echo "127.0.0.1 arch.homework" >> /etc/hosts
+kubectl create namespace m && \
+helm install nginx ingress-nginx/ingress-nginx --namespace m -f nginx-ingress.yaml 
+```
+
+```
+git clone -b 6-Ingress https://github.com/dimarudik/otus.git
+cd otus
+k apply -f ./k8s/
 ```
 
 ```
