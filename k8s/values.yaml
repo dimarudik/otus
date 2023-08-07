@@ -1,2 +1,7 @@
 container:
-  image: postgres
+  db:
+    image: postgres
+  app:
+    image: dimarudik/2-docker
+
+namespace: m

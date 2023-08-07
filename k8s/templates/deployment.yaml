@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: demo
+  namespace: {{ .Values.namespace }}
 spec:
   selector:
     matchLabels:
@@ -13,7 +14,7 @@ spec:
     spec:
       containers:
         - name: demo
-          image: dimarudik/2-docker
+          image: {{ .Values.container.app.image }}
           ports:
             - name: tpc
               protocol: TCP

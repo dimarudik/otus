@@ -2,8 +2,9 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: demo-configmap
+  namespace: {{ .Values.namespace }}
 data:
-  database_host                 : "db-service.default.svc.cluster.local"
+  database_host                 : "db-service.m.svc.cluster.local"
   database_name                 : "postgres"
   host_auth_method              : "md5"
   pgbouncer_database            : "*"
