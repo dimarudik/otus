@@ -2,6 +2,9 @@ container:
   db:
     image: postgres
   app:
-    image: dimarudik/2-docker
+    image: dimarudik/otus:11-Prometheus
 
 namespace: m
+
+hpa:
+  minReplicas: 4

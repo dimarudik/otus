@@ -1,13 +1,15 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: demo-service
+  name: demo
   namespace: {{ .Values.namespace }}
+  labels:
+    app: demo
 spec:
   selector:
     app: demo
   ports:
-    - name: tcp
+    - name: web
       protocol: TCP
       port: 8080
 ---
@@ -20,6 +22,6 @@ spec:
   selector:
     app: db
   ports:
-    - name: tcp
+    - name: db
       protocol: TCP
       port: 5432

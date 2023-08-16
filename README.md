@@ -1,23 +1,36 @@
 ```
 helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx/ && \
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts \
 helm repo update
 ```
 
 ```
 kubectl create namespace m && \
-helm install nginx ingress-nginx/ingress-nginx --namespace m -f nginx-ingress.yaml 
+helm install prom prometheus-community/kube-prometheus-stack -f prometheus.yaml --atomic -n m && \
+helm install nginx ingress-nginx/ingress-nginx -n m -f nginx-ingress.yaml --atomic \
+    --set controller.metrics.enabled=true \
+    --set-string controller.podAnnotations."prometheus\.io/scrape"="true" \
+    --set-string controller.podAnnotations."prometheus\.io/port"="10254"
 ```
 
 ```
-git clone -b 7-CRUD https://github.com/dimarudik/otus.git
+git clone -b 11-Prometheus https://github.com/dimarudik/otus.git
 cd otus
-helm upgrade --install app ./k8s/ --wait --atomic
+helm upgrade --install app ./k8s/ --wait --atomic -n m
 ```
 
 ```
+kubectl port-forward service/prometheus-operated 9090 -n m
+kubectl port-forward service/prom-grafana 9000:80 -n m
 kubectl port-forward service/nginx-ingress-nginx-controller 8080:80 -n m
 ```
 
 ```
-newman run postman/7-CRUD.postman_collection.json
+http://localhost:9090
+http://localhost:9000
 ```
+
+```
+newman run postman/11-Prometheus.postman_collection.json --iteration-count 3000
+```
+JSON Dashboard

@@ -3,6 +3,8 @@ kind: Deployment
 metadata:
   name: demo
   namespace: {{ .Values.namespace }}
+  labels:
+    app: demo
 spec:
   selector:
     matchLabels:
@@ -15,16 +17,17 @@ spec:
       containers:
         - name: demo
           image: {{ .Values.container.app.image }}
+          imagePullPolicy: Always
           ports:
-            - name: tpc
+            - name: web
               protocol: TCP
               containerPort: 8080
           readinessProbe:
             httpGet:
               path: /health
               port: 8080
-            initialDelaySeconds: 5
-            periodSeconds: 5
+            initialDelaySeconds: 180
+            periodSeconds: 10
           livenessProbe:
             httpGet:
               path: /health
@@ -42,18 +45,28 @@ spec:
                 configMapKeyRef:
                   name  : demo-configmap
                   key   : database_name
-            - name  : SPRING_JPA_SHOW-SQL
-              valueFrom:
-                configMapKeyRef:
-                  name  : demo-configmap
-                  key   : spring_jpa_show-sql
+#            - name  : SPRING_JPA_SHOW-SQL
+#              valueFrom:
+#                configMapKeyRef:
+#                  name  : demo-configmap
+#                  key   : spring_jpa_show-sql
             - name  : SPRING_JPA_HIBERNATE_DDL-AUTO
               valueFrom:
                 configMapKeyRef:
                   name  : demo-configmap
                   key   : spring_jpa_hibernate_ddl-auto
             - name  : SPRING_DATASOURCE_URL
-              value : "jdbc:postgresql://$(DATABASE_HOST)/$(DATABASE_NAME)"
+              value : "jdbc:postgresql://$(DATABASE_HOST)/$(DATABASE_NAME)?targetServerType=primary"
+            - name  : MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE
+              valueFrom:
+                configMapKeyRef:
+                  name  : demo-configmap
+                  key   : management_endpoints_web_exposure_include
+            - name  : MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED
+              valueFrom:
+                configMapKeyRef:
+                  name  : demo-configmap
+                  key   : management_metrics_export_prometheus_enabled
             - name  : SPRING_DATASOURCE_USERNAME
               valueFrom:
                 secretKeyRef:
