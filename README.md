@@ -45,3 +45,7 @@ newman run postman/11-Prometheus.postman_collection.json --iteration-count 14000
 [CPUMEM Dashboard](https://raw.githubusercontent.com/dimarudik/otus/11-Prometheus/grafana/MEM_CPU_Usage.json)
 
 ![CPUMEM Dashboard](./grafana/CPUMEM.png)
+
+[PG Dashboard](https://raw.githubusercontent.com/dimarudik/otus/11-Prometheus/grafana/prompg.json)
+
+![PG Dashboard](./grafana/pg.png)
