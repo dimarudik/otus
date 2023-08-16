@@ -7,10 +7,15 @@ helm repo update
 ```
 kubectl create namespace m && \
 helm install prom prometheus-community/kube-prometheus-stack -f prometheus.yaml --atomic -n m && \
+helm install pgexport prometheus-community/prometheus-postgres-exporter -n m -f postgres_exporter.yml && \
 helm install nginx ingress-nginx/ingress-nginx -n m -f nginx-ingress.yaml --atomic \
     --set controller.metrics.enabled=true \
     --set-string controller.podAnnotations."prometheus\.io/scrape"="true" \
     --set-string controller.podAnnotations."prometheus\.io/port"="10254"
+```
+
+```
+helm show values prometheus-community/prometheus-postgres-exporter -n m
 ```
 
 ```

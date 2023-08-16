@@ -1,0 +1,9 @@
+serviceMonitor:
+  enabled: true
+  namespace: m
+
+config:
+  datasource:
+    host: 'db-service'
+    user: postgres
+    password: postgres
