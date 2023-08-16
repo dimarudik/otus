@@ -97,7 +97,7 @@
       ],
       "thresholds": [],
       "timeRegions": [],
-      "title": "JVM Total",
+      "title": "MEM Total",
       "tooltip": {
         "msResolution": false,
         "shared": true,
@@ -284,6 +284,6 @@
   "timezone": "browser",
   "title": "MEM,CPU Usage",
   "uid": "c832ea3e-2b6d-4efb-a981-9b87c29be16c",
-  "version": 19,
+  "version": 20,
   "weekStart": ""
 }

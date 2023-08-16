@@ -36,3 +36,7 @@ newman run postman/11-Prometheus.postman_collection.json --iteration-count 14000
 [DEMO Dashboard](https://raw.githubusercontent.com/dimarudik/otus/11-Prometheus/grafana/MicrometerSpringThroughput.json)
 
 ![DEMO Dashboard](./grafana/2023-08-16_10-05-14.png)
+
+[CPUMEM Dashboard](https://raw.githubusercontent.com/dimarudik/otus/11-Prometheus/grafana/MEM_CPU_Usage.json)
+
+![CPUMEM Dashboard](./grafana/CPUMEM.png)
