@@ -6,7 +6,7 @@ plugins {
 
 group = 'ru.otus'
 //version = '0.0.1-SNAPSHOT'
-version = '11-Prometheus'
+version = '15-BFF'
 
 java {
 	sourceCompatibility = '17'

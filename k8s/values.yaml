@@ -2,7 +2,7 @@ container:
   db:
     image: postgres
   app:
-    image: dimarudik/otus:11-Prometheus
+    image: dimarudik/otus:15-BFF
 
 namespace: m
 

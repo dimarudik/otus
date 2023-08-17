@@ -1,5 +1,5 @@
 # https://codefresh.io/docs/docs/example-catalog/ci-examples/gradle/
-# docker build -t dimarudik/otus:11-Prometheus . --no-cache
+# docker build -t dimarudik/otus:15-BFF . --no-cache
 # docker run --name my -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=postgres -p 5432:5432 -d postgres
 FROM gradle:jdk17 AS build
 COPY --chown=gradle:gradle . /home/gradle/src
