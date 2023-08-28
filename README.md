@@ -1,11 +1,13 @@
 ```
 helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx/ && \
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts \
+helm repo add hashicorp https://helm.releases.hashicorp.com
 helm repo update
 ```
 
 ```
 kubectl create namespace m && \
+helm install vault hashicorp/vault -n m && \
 helm install prom prometheus-community/kube-prometheus-stack -f prometheus.yaml --atomic -n m && \
 helm install pgexport prometheus-community/prometheus-postgres-exporter -n m -f postgres_exporter.yml && \
 helm install nginx ingress-nginx/ingress-nginx -n m -f nginx-ingress.yaml --atomic \
@@ -38,14 +40,3 @@ http://localhost:9000
 ```
 newman run postman/11-Prometheus.postman_collection.json --iteration-count 14000
 ```
-[DEMO Dashboard](https://raw.githubusercontent.com/dimarudik/otus/11-Prometheus/grafana/MicrometerSpringThroughput.json)
-
-![DEMO Dashboard](./grafana/2023-08-16_10-05-14.png)
-
-[CPUMEM Dashboard](https://raw.githubusercontent.com/dimarudik/otus/11-Prometheus/grafana/MEM_CPU_Usage.json)
-
-![CPUMEM Dashboard](./grafana/CPUMEM.png)
-
-[PG Dashboard](https://raw.githubusercontent.com/dimarudik/otus/11-Prometheus/grafana/prompg.json)
-
-![PG Dashboard](./grafana/pg.png)

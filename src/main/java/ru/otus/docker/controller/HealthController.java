@@ -15,7 +15,7 @@ import java.util.Optional;
 @RestController
 public class HealthController {
 
-//    curl -X GET -i -H "Content-Type:application/json" -H "Host:arch.homework" http://localhost:8080/health
+//    curl -X GET -i -H "Content-Type:application/json" -H "Host:arch.homework" -u user:user http://localhost:8000/health
     @GetMapping("/health")
     public Health health() {
         return new Health("OK");
