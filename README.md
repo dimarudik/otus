@@ -1,7 +1,6 @@
 ```
 helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx/ && \
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts \
-helm repo add hashicorp https://helm.releases.hashicorp.com
 helm repo update
 ```
 
@@ -12,7 +11,10 @@ cd otus
 
 ```
 kubectl create namespace v && \
-helm upgrade --install vault ./k8s/vault -n v --wait && \
+helm upgrade --install vault ./k8s/vault -n v --wait
+```
+
+```
 kubectl -n v exec vault-0 -- vault operator init \
     -key-shares=1 \
     -key-threshold=1 \
