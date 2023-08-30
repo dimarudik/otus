@@ -11,7 +11,17 @@ cd otus
 
 ```
 kubectl create namespace v && \
-helm upgrade --install vault ./k8s/vault -n v --wait
+kubectl create namespace m
+```
+
+```
+helm upgrade --install vault ./k8s/vault -n v --wait && \
+helm install prom prometheus-community/kube-prometheus-stack -f prometheus.yaml --atomic -n m && \
+helm install pgexport prometheus-community/prometheus-postgres-exporter -n m -f postgres_exporter.yml && \
+helm install nginx ingress-nginx/ingress-nginx -n m -f nginx-ingress.yaml --atomic \
+    --set controller.metrics.enabled=true \
+    --set-string controller.podAnnotations."prometheus\.io/scrape"="true" \
+    --set-string controller.podAnnotations."prometheus\.io/port"="10254"
 ```
 
 ```
@@ -21,16 +31,6 @@ kubectl -n v exec vault-0 -- vault operator init \
     -format=json > cluster-keys-tmp.json && \
 VAULT_UNSEAL_KEY=$(jq -r ".unseal_keys_b64[]" cluster-keys-tmp.json) && \
 kubectl -n v exec vault-0 -- vault operator unseal $VAULT_UNSEAL_KEY
-```
-
-```
-kubectl create namespace m && \
-helm install prom prometheus-community/kube-prometheus-stack -f prometheus.yaml --atomic -n m && \
-helm install pgexport prometheus-community/prometheus-postgres-exporter -n m -f postgres_exporter.yml && \
-helm install nginx ingress-nginx/ingress-nginx -n m -f nginx-ingress.yaml --atomic \
-    --set controller.metrics.enabled=true \
-    --set-string controller.podAnnotations."prometheus\.io/scrape"="true" \
-    --set-string controller.podAnnotations."prometheus\.io/port"="10254"
 ```
 
 ```
