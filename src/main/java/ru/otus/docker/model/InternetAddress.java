@@ -1,6 +1,5 @@
 package ru.otus.docker.model;
 
-import java.net.Inet4Address;
 import java.net.InetAddress;
 
 public record InternetAddress (InetAddress inetAddress, String hostAddress) {

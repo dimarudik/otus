@@ -15,13 +15,34 @@ kubectl create namespace m
 ```
 
 ```
-helm upgrade --install vault ./k8s/vault -n v --wait && \
-helm install prom prometheus-community/kube-prometheus-stack -f prometheus.yaml --atomic -n m && \
-helm install pgexport prometheus-community/prometheus-postgres-exporter -n m -f postgres_exporter.yml && \
+helm install vault ./k8s/vault --set "server.dev.enabled=true" -n v --wait && \
+helm install prom prometheus-community/kube-prometheus-stack -f prometheus.yaml \ 
+    --atomic -n m && \
+helm install pgexport prometheus-community/prometheus-postgres-exporter -n m \ 
+    -f postgres_exporter.yml && \
 helm install nginx ingress-nginx/ingress-nginx -n m -f nginx-ingress.yaml --atomic \
     --set controller.metrics.enabled=true \
     --set-string controller.podAnnotations."prometheus\.io/scrape"="true" \
     --set-string controller.podAnnotations."prometheus\.io/port"="10254"
+```
+
+```
+kubectl -n v exec -it vault-0 -- /bin/sh
+vault secrets enable -path=internal kv-v2
+vault kv put internal/database/config username="postgres" password="postgres"
+vault auth enable kubernetes
+vault write auth/kubernetes/config \
+      kubernetes_host="https://$KUBERNETES_PORT_443_TCP_ADDR:443"
+vault policy write internal-app - <<EOF
+path "internal/data/database/config" {
+   capabilities = ["read"]
+}
+EOF
+```
+
+```
+kubectl create sa internal-app -n v
+kubectl apply --filename ./tmp/deployment-orgchart.yaml
 ```
 
 ```

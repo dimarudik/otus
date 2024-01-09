@@ -21,12 +21,14 @@ public class UserController {
 //  curl -X POST -i -H "Content-Type:application/json" -H "Host:arch.homework" -d '{"name": "FrodoBaggins"}' http://localhost:8080/api/user
     @RequestMapping(value = "/user", method = RequestMethod.POST)
     public ResponseEntity<User> newUser(@RequestBody User user) {
-        return ResponseEntity.ok(
-                userService
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(userService
                         .saveUser(user)
                         .orElseThrow(() -> new ResponseStatusException(
                                 HttpStatus.BAD_REQUEST, "User can not be saved"
-                        )));
+                        ))
+                );
     }
 
 //  curl -X GET -i -H "Content-Type:application/json" -H "Host:arch.homework" http://localhost:8080/api/user/1
@@ -36,7 +38,7 @@ public class UserController {
                 userService
                         .findUserById(id)
                         .orElseThrow(() -> new ResponseStatusException(
-                                HttpStatus.BAD_REQUEST, "No user with specified ID was found"
+                                HttpStatus.NOT_FOUND, "No user with specified ID was found"
                         )));
     }
 
@@ -47,18 +49,16 @@ public class UserController {
                 userService
                         .updateUserById(id, user)
                         .orElseThrow(() -> new ResponseStatusException(
-                                HttpStatus.BAD_REQUEST, "No user with specified ID was found"
+                                HttpStatus.NOT_FOUND, "No user with specified ID was found"
                         )));
     }
 
 //  curl -X DELETE -i -H "Content-Type:application/json" -H "Host:arch.homework" http://localhost:8080/api/user/1
     @RequestMapping(value = "/user/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<Boolean> deleteUserById(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(
-                userService
-                        .deleteUserById(id)
-                        .orElseThrow(() -> new ResponseStatusException(
-                                HttpStatus.BAD_REQUEST, "No user with specified ID was found"
-                        )));
+    public ResponseEntity<Void> deleteUserById(@PathVariable("id") Long id) {
+        userService.deleteUserById(id);
+        return ResponseEntity
+                .noContent()
+                .build();
     }
 }
